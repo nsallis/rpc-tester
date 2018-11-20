@@ -12,7 +12,6 @@ type Response struct {
 }
 
 type Request struct {
-	RequestName string
 	Payload     string
 }
 
@@ -36,7 +35,7 @@ func main() {
 
 	var (
 		addr     = "localhost:" + port
-		request  = &Request{RequestName: command, Payload: payload}
+		request  = &Request{Payload: payload}
 		response = new(Response)
 	)
 	// Establish the connection to the adddress of the
@@ -52,7 +51,7 @@ func main() {
 	// Perform a procedure call (core.HandlerName == Handler.Execute)
 	// with the Request as specified and a pointer to a response
 	// to have our response back.
-	err = client.Call(request.RequestName, request, response)
+	err = client.Call(command, request, response)
 	if err != nil {
 		fmt.Printf("Could not call server: %v", err)
 	}

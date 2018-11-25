@@ -129,18 +129,15 @@ func SendRequest(params RequestParams, builder *gtk.Builder) {
 	jsonText := strings.Replace(string(jsonResponse), "\\\"", "\"", -1)
 	jsonText = strings.Replace(jsonText, ",\"", ",\n\"", -1)
 	jsonText = strings.Replace(jsonText, "{\"", "{\n\"", -1)
-	if err != nil {
-		fmt.Sprintln("error pretty printing: %e", err)
-	}
-	fmt.Println("jsonText")
-	fmt.Println(jsonText)
-
 	jsonText = strings.Replace(string(jsonText), ":{", ":\n\t{", -1)
 
 	responseTextObj, _ := builder.GetObject("ResponseText")
 	responseTextBox := responseTextObj.(*gtk.TextView)
 	responseTextBuffer, _ := responseTextBox.GetBuffer()
-	responseTextBuffer.SetText(string(jsonText))
-	fmt.Println("Response: " + string(jsonText))
+	if params.FormatAsJson {
+		responseTextBuffer.SetText(string(jsonText))
+	} else {
+		responseTextBuffer.SetText(string(response.Payload))
+	}
 
 }
